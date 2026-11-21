@@ -14,7 +14,26 @@ body {
 
 .app-shell {
   display: grid;
-  place-content: center;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 16px;
   min-height: 100vh;
-  text-align: center;
+  padding: 24px;
+}
+
+.canvas-heading h1,
+.canvas-heading p {
+  margin: 0;
+}
+
+.canvas-heading p {
+  margin-top: 6px;
+  color: #60718a;
+}
+
+.flow-canvas {
+  min-height: 520px;
+  overflow: hidden;
+  border: 1px solid #ccd7e2;
+  border-radius: 12px;
+  background: #fff;
 }
