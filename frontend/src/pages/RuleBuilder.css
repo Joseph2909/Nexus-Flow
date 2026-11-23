@@ -1,0 +1,76 @@
+.rule-builder-page {
+    min-height: 100%;
+    padding: 30px;
+    background: #f3f7ff;
+}
+
+.rule-builder-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 24px;
+}
+
+.rule-builder-header h1 {
+    color: #172b4d;
+    font-size: 25px;
+    margin: 0 0 7px;
+}
+
+.rule-builder-header p {
+    color: #8995a8;
+    margin: 0;
+    font-size: 13px;
+}
+
+.save-workflow-btn {
+    background: #2169e8;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.workflow-editor-layout {
+    display: flex;
+    min-height: 620px;
+    background: #ffffff;
+    border: 1px solid #dce5f2;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.workflow-editor-canvas {
+    flex: 1;
+    min-width: 0;
+}
+
+.workflow-editor-canvas .workflow-canvas {
+    height: 620px;
+    border: none;
+    border-radius: 0;
+}
+
+@media (max-width: 768px) {
+    .workflow-editor-layout {
+        flex-direction: column;
+    }
+
+    .workflow-editor-canvas .workflow-canvas {
+        height: 500px;
+    }
+}
+
+@media (max-width: 600px) {
+    .rule-builder-page {
+        padding: 18px 12px;
+    }
+
+    .rule-builder-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

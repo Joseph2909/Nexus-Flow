@@ -1,0 +1,124 @@
+.workflow-sidebar {
+    width: 250px;
+    min-width: 250px;
+    background: #ffffff;
+    border-right: 1px solid #e7edf6;
+    padding: 22px 16px;
+}
+
+.workflow-sidebar-heading {
+    margin-bottom: 22px;
+}
+
+.workflow-sidebar-heading h3 {
+    color: #172b4d;
+    font-size: 16px;
+    margin: 0 0 7px;
+}
+
+.workflow-sidebar-heading p {
+    color: #8995a8;
+    font-size: 11px;
+    margin: 0;
+}
+
+.workflow-component-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.workflow-component {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 9px;
+    border: 1px solid #e7edf6;
+    border-radius: 10px;
+    background: #ffffff;
+    cursor: grab;
+    transition: all 0.2s ease;
+}
+
+.workflow-component:hover {
+    border-color: #9fc3fa;
+    background: #f7faff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 37, 76, 0.06);
+}
+
+.workflow-component:active {
+    cursor: grabbing;
+}
+
+.workflow-component-icon {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 9px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.workflow-component-icon.blue {
+    color: #3478e5;
+    background: #eaf2ff;
+}
+
+.workflow-component-icon.orange {
+    color: #e58b32;
+    background: #fff3e5;
+}
+
+.workflow-component-icon.purple {
+    color: #8054d8;
+    background: #f1ebff;
+}
+
+.workflow-component-icon.green {
+    color: #169b69;
+    background: #e7f8f0;
+}
+
+.workflow-component-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.workflow-component-info h4 {
+    color: #253858;
+    font-size: 12px;
+    margin: 0 0 5px;
+}
+
+.workflow-component-info p {
+    color: #8995a8;
+    font-size: 10px;
+    margin: 0;
+}
+
+.workflow-drag-icon {
+    color: #a2adbd;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .workflow-sidebar {
+        width: 100%;
+        min-width: 0;
+        border-right: none;
+        border-bottom: 1px solid #e7edf6;
+    }
+
+    .workflow-component-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 420px) {
+    .workflow-component-list {
+        grid-template-columns: 1fr;
+    }
+}
