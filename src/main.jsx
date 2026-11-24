@@ -4,7 +4,9 @@ import {
   addEdge,
   Background,
   Controls,
+  Handle,
   MiniMap,
+  Position,
   ReactFlow,
   ReactFlowProvider,
   useEdgesState,
@@ -17,24 +19,94 @@ import './styles.css';
 
 const initialNodes = [
   {
-    id: '1',
-    position: { x: 120, y: 120 },
-    data: { label: 'Start' },
+    id: 'sensor',
+    type: 'dataSource',
+    position: { x: 80, y: 40 },
+    data: {
+      category: 'dataSource',
+      label: 'Turbine Sensor',
+      description: 'Data source',
+      detail: 'MongoDB Time Series',
+      icon: 'IN',
+    },
   },
   {
-    id: '2',
-    position: { x: 420, y: 120 },
-    data: { label: 'Action' },
+    id: 'average',
+    type: 'mathOperation',
+    position: { x: 80, y: 200 },
+    data: {
+      category: 'mathOperation',
+      label: 'Moving Average',
+      description: 'Math operation',
+      detail: 'Window: 10 samples',
+      icon: 'fx',
+    },
+  },
+  {
+    id: 'alert',
+    type: 'actionTrigger',
+    position: { x: 80, y: 360 },
+    data: {
+      category: 'actionTrigger',
+      label: 'SMS Alert',
+      description: 'Action trigger',
+      detail: 'When rule matches',
+      icon: 'GO',
+    },
   },
 ];
 
 const nodeTemplates = [
-  { type: 'trigger', label: 'Trigger', description: 'Start your flow' },
-  { type: 'action', label: 'Action', description: 'Perform a step' },
-  { type: 'output', label: 'Output', description: 'Finish your flow' },
+  {
+    type: 'dataSource',
+    category: 'dataSource',
+    label: 'Data Source',
+    description: 'Read sensor data',
+    detail: 'MongoDB Time Series',
+    icon: 'IN',
+  },
+  {
+    type: 'mathOperation',
+    category: 'mathOperation',
+    label: 'Math Operation',
+    description: 'Transform values',
+    detail: 'Window: 10 samples',
+    icon: 'fx',
+  },
+  {
+    type: 'actionTrigger',
+    category: 'actionTrigger',
+    label: 'Action Trigger',
+    description: 'Send an alert',
+    detail: 'When rule matches',
+    icon: 'GO',
+  },
 ];
 
 const nodeDragType = 'application/nexus-flow-node';
+const nodeTypes = {
+  dataSource: WorkflowNode,
+  mathOperation: WorkflowNode,
+  actionTrigger: WorkflowNode,
+};
+
+function WorkflowNode({ data }) {
+  return (
+    <div className={`flow-node flow-node-${data.category}`}>
+      {data.category !== 'dataSource' && <Handle type="target" position={Position.Top} />}
+      <div className="flow-node-heading">
+        <span className="flow-node-icon" aria-hidden="true">{data.icon}</span>
+        <span className="flow-node-copy">
+          <strong>{data.label}</strong>
+          <span>{data.description}</span>
+        </span>
+        <span className="flow-node-menu" aria-hidden="true">···</span>
+      </div>
+      <div className="flow-node-detail">{data.detail}</div>
+      {data.category !== 'actionTrigger' && <Handle type="source" position={Position.Bottom} />}
+    </div>
+  );
+}
 
 function AppLayout() {
   const { pathname } = useLocation();
@@ -140,7 +212,10 @@ function CanvasPage() {
 
 function CanvasEditor() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([
+    { id: 'sensor-average', source: 'sensor', target: 'average' },
+    { id: 'average-alert', source: 'average', target: 'alert' },
+  ]);
   const { screenToFlowPosition, fitView } = useReactFlow();
   const canvasRef = useRef(null);
   const nextNodeId = useRef(3);
@@ -150,8 +225,15 @@ function CanvasEditor() {
       ...currentNodes,
       {
         id: String(nextNodeId.current++),
+        type: template.type,
         position,
-        data: { label: template.label },
+        data: {
+          category: template.category,
+          label: template.label,
+          description: template.description,
+          detail: template.detail,
+          icon: template.icon,
+        },
       },
     ]);
   }, [setNodes]);
@@ -193,8 +275,11 @@ function CanvasEditor() {
 
   const resetCanvas = () => {
     setNodes(initialNodes);
-    setEdges([]);
-    nextNodeId.current = 3;
+    setEdges([
+      { id: 'sensor-average', source: 'sensor', target: 'average' },
+      { id: 'average-alert', source: 'average', target: 'alert' },
+    ]);
+    nextNodeId.current = 4;
     requestAnimationFrame(() => fitView({ padding: 0.2 }));
   };
 
@@ -252,6 +337,7 @@ function CanvasEditor() {
           }}
         >
           <ReactFlow
+            nodeTypes={nodeTypes}
             nodes={nodes}
             edges={edges}
             onNodesChange={onNodesChange}
@@ -260,7 +346,7 @@ function CanvasEditor() {
             fitView
             fitViewOptions={{ padding: 0.2 }}
           >
-            <Background gap={20} size={1} />
+            <Background gap={20} size={1} color="#e5e8f0" bgColor="#fcfcfe" />
             <Controls />
             <MiniMap pannable zoomable />
           </ReactFlow>
