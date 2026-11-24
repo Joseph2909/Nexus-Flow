@@ -4,19 +4,12 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
-    Network,
-    LayoutDashboard,
-    Workflow,
-    Cpu,
-    ChartNoAxesColumn,
     Bell,
     Settings,
-    Menu,
     Search,
     ChevronDown,
     LogOut,
     UserRound,
-    CircleUserRound,
     CheckCheck,
     FolderKanban,
     Monitor,
@@ -117,17 +110,6 @@ function Dashboard() {
         { name: 'Database', status: 'Operational', icon: Database },
         { name: 'Device Network', status: 'Operational', icon: Wifi },
     ];
-    const [activeMenu, setActiveMenu] = useState('Dashboard');
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-
-    const menuItems = [
-        { name: 'Dashboard', icon: LayoutDashboard },
-        { name: 'Rule Builder', icon: Workflow },
-        { name: 'Devices', icon: Cpu },
-        { name: 'Analytics', icon: ChartNoAxesColumn },
-        { name: 'Settings', icon: Settings }
-    ];
-
     const navigate = useNavigate();
 
     const [searchQuery, setSearchQuery] = useState('');
@@ -197,52 +179,7 @@ function Dashboard() {
 
 
     return (
-        <div className="dashboard-container">
-
-            {/* Sidebar */}
-            <aside className={`dashboard-sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
-
-                <div className="sidebar-brand">
-                    <Network size={30} />
-                    <span>NexusFlow</span>
-                </div>
-
-                <div className="sidebar-menu">
-
-                    <p className="sidebar-label">WORKSPACE</p>
-
-                    {menuItems.map((item) => {
-                        const Icon = item.icon;
-
-                        return (
-                            <button
-                                key={item.name}
-                                className={`sidebar-menu-item ${activeMenu === item.name ? 'active' : ''
-                                    }`}
-                                onClick={() => {
-                                    setActiveMenu(item.name);
-                                    setSidebarOpen(false);
-                                }}
-                            >
-                                <Icon size={19} />
-                                <span>{item.name}</span>
-                            </button>
-                        );
-                    })}
-
-                </div>
-
-                <div className="sidebar-bottom">
-                    <button className="sidebar-logout">
-                        <LogOut size={18} />
-                        <span>Logout</span>
-                    </button>
-                </div>
-
-            </aside>
-
-            {/* Main Workspace */}
-            <main className="dashboard-main">
+        <main className="dashboard-main">
 
                 {/* Header */}
 
@@ -251,16 +188,8 @@ function Dashboard() {
                     {/* Header Left */}
                     <div className="header-left">
 
-                        <button
-                            className="mobile-menu-button"
-                            onClick={() => setSidebarOpen(!sidebarOpen)}
-                            aria-label="Toggle sidebar"
-                        >
-                            <Menu size={22} />
-                        </button>
-
                         <div>
-                            <h2>{activeMenu}</h2>
+                            <h2>Dashboard</h2>
                             <p>Welcome back to NexusFlow</p>
                         </div>
 
@@ -621,17 +550,7 @@ function Dashboard() {
 
                 </section>
 
-            </main>
-
-            {/* Mobile Sidebar Overlay */}
-            {sidebarOpen && (
-                <div
-                    className="sidebar-overlay"
-                    onClick={() => setSidebarOpen(false)}
-                ></div>
-            )}
-
-        </div>
+        </main>
     );
 }
 

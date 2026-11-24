@@ -92,6 +92,12 @@ Measurement fields:
 
 Telemetry API:
 
+GET /api/telemetry?deviceId=TURBINE-001&limit=50
+
+- `deviceId` is optional.
+- `limit` is optional, defaults to 50, and accepts integers from 1 to 100.
+- Results are sorted newest-first and include the device ID, measurements, and timestamp.
+
 POST /api/telemetry
 
 Request fields:
@@ -102,6 +108,7 @@ Request fields:
 - pressure
 
 The Express backend receives telemetry data and stores it in the MongoDB Time-Series collection.
+The Analytics page reads telemetry through the GET endpoint and displays the returned measurements.
 
 ## 7. Database Testing
 
@@ -119,9 +126,7 @@ The following tests were performed:
 
 ## 8. Test Results
 
-All the above database and API tests were successful.
-
-The React frontend integration has not yet been verified.
+The database and API checks above were previously reported successful. During Week 1 frontend integration verification, the backend health endpoint returned success, telemetry retrieval for `TURBINE-001` returned three records, and an invalid limit returned HTTP 400. The Analytics page rendered those retrieved readings in the browser.
 
 ## 9. Conclusion
 

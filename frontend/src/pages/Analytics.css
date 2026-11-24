@@ -1,0 +1,75 @@
+.analytics-page {
+    min-height: 100%;
+    padding: 30px;
+    background: #f3f7ff;
+}
+
+.analytics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.analytics-header h1 {
+    color: #172b4d;
+    font-size: 25px;
+    margin: 0 0 7px;
+}
+
+.analytics-header p {
+    color: #8995a8;
+    font-size: 13px;
+    margin: 0;
+}
+
+.analytics-device {
+    padding: 8px 12px;
+    border-radius: 7px;
+    background: #e7f8f0;
+    color: #169b69;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.analytics-message {
+    padding: 18px;
+    border: 1px solid #e7edf6;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #71809a;
+    font-size: 13px;
+}
+
+.analytics-message.error {
+    border-color: #fecaca;
+    background: #fff7f7;
+    color: #b42318;
+}
+
+.telemetry-chart-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+@media (max-width: 1000px) {
+    .telemetry-chart-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .analytics-page {
+        padding: 18px 12px;
+    }
+
+    .analytics-header {
+        flex-direction: column;
+    }
+
+    .telemetry-chart-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,29 @@
+.telemetry-chart {
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid #e7edf6;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.telemetry-chart-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.telemetry-chart-heading h3 {
+    color: #253858;
+    font-size: 14px;
+    margin: 0;
+}
+
+.telemetry-chart-heading span {
+    color: #8995a8;
+    font-size: 11px;
+}
+
+.telemetry-chart-area {
+    height: 240px;
+}

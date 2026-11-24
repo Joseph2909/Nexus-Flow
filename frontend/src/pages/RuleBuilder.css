@@ -34,6 +34,12 @@
     font-weight: 600;
 }
 
+.workflow-save-message {
+    color: #169b69;
+    font-size: 12px;
+    margin: 10px 0 0;
+}
+
 .workflow-editor-layout {
     display: flex;
     min-height: 620px;
