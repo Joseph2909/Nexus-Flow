@@ -43,7 +43,10 @@ const initialEdges = [
 
 const nodeTypes = {
     start: CustomNode,
+    device: CustomNode,
+    sensor: CustomNode,
     condition: CustomNode,
+    logic: CustomNode,
     action: CustomNode,
     end: CustomNode,
 };
@@ -100,6 +103,7 @@ function WorkflowCanvasContent({ onWorkflowChange }) {
                 data: {
                     label: component.label,
                     description: component.description,
+                    config: component.config || {},
                 },
             },
         ]);

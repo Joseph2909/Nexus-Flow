@@ -110,7 +110,97 @@ Request fields:
 The Express backend receives telemetry data and stores it in the MongoDB Time-Series collection.
 The Analytics page reads telemetry through the GET endpoint and displays the returned measurements.
 
-## 7. Database Testing
+## 7. Week 2 Rule Contract — Day 2 Design
+
+This section defines the Week 2 Day 2 contract for the frontend, backend, and
+database work. Rule persistence, validation, and compilation are not implemented yet.
+
+### Workflow payload
+
+The frontend submits a graph as part of a rule:
+
+```json
+{
+  "name": "High temperature alert",
+  "description": "Notify when turbine temperature is high",
+  "enabled": false,
+  "workflow": {
+    "nodes": [
+      {
+        "id": "node-1",
+        "type": "condition",
+        "position": { "x": 100, "y": 100 },
+        "data": {
+          "label": "Temperature threshold",
+          "description": "Compare a sensor value",
+          "config": { "operator": ">", "value": 80 }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge-1",
+        "source": "node-1",
+        "target": "node-2"
+      }
+    ]
+  }
+}
+```
+
+Supported node types are `start`, `device`, `sensor`, `condition`, `logic`,
+`action`, and `end`. `start` and `end` are editor flow markers. Node `type` and
+`data.config` carry machine-readable behavior. Labels and positions are for the
+editor and must not determine execution. `data.config` remains JSON so node
+configuration can evolve; the backend validator will validate it by node type.
+The backend generates any compiled output; clients must not submit trusted
+executable code.
+
+### Rule storage requirements
+
+The `rules` collection document shape is:
+
+| Field | Type | Requirement |
+|---|---|---|
+| `_id` | ObjectId | MongoDB identifier |
+| `name` | String | Required, trimmed, non-empty |
+| `description` | String | Optional; defaults to empty string |
+| `enabled` | Boolean | Defaults to `false` |
+| `schemaVersion` | Number | Required; starts at `1` |
+| `workflow.nodes` | Array of node objects | Required; each has `id`, `type`, `position`, and `data` |
+| `workflow.edges` | Array of edge objects | Required; each has `id`, `source`, and `target` |
+| `compiledDefinition` | Object | Optional, server-generated only |
+| `createdAt`, `updatedAt` | Date | Managed by Mongoose timestamps |
+
+Node and edge IDs are unique within their respective workflow arrays. Edge
+endpoints must refer to existing node IDs; full graph and node configuration
+validation is handled by the backend validator. Compiled output can be
+recreated from the workflow. Execution history is outside this collection and
+will be designed separately.
+
+### Backend boundaries and API proposal
+
+- `backend/src/routes/rule.routes.js` maps rule HTTP endpoints.
+- `backend/src/controllers/rule.controller.js` handles request/response concerns.
+- `backend/src/services/rule.service.js` owns persistence and coordinates validation/compiler modules.
+- Validation and compilation remain separate modules so they can be tested independently.
+- `POST /api/rules` accepts `name`, optional `description`, optional `enabled`,
+  and `workflow`; it returns HTTP 201 with `{ "success": true, "data": rule }`.
+- `GET /api/rules` returns HTTP 200 with `{ "success": true, "count": n, "data": [] }`.
+- `GET /api/rules/:id` returns HTTP 200 with `{ "success": true, "data": rule }`.
+- `PUT /api/rules/:id` accepts the create fields and replaces the editable rule
+  fields; it returns HTTP 200 with `{ "success": true, "data": rule }`.
+- `DELETE /api/rules/:id` returns HTTP 200 with `{ "success": true, "message": "Rule deleted" }`.
+- Invalid input returns HTTP 400; a validly formatted but unknown ID returns
+  HTTP 404. Server/database failures return HTTP 500 with a failure response.
+
+The frontend palette in `frontend/src/components/workflow/WorkflowSidebar.jsx`
+now uses these node type identifiers and includes initial `data.config`
+defaults. Member 1 will preserve this workflow shape when API persistence is
+implemented. Members 2 and 3 use this contract for the model and persistence
+implementation on their scheduled days.
+
+## 8. Database Testing
 
 The following tests were performed:
 
@@ -124,11 +214,11 @@ The following tests were performed:
 8. Telemetry record counting.
 9. Invalid device ID query testing.
 
-## 8. Test Results
+## 9. Test Results
 
 The database and API checks above were previously reported successful. During Week 1 frontend integration verification, the backend health endpoint returned success, telemetry retrieval for `TURBINE-001` returned three records, and an invalid limit returned HTTP 400. The Analytics page rendered those retrieved readings in the browser.
 
-## 9. Conclusion
+## 10. Conclusion
 
 The NexusFlow database environment, device metadata storage,
 Time-Series telemetry storage, and backend telemetry ingestion

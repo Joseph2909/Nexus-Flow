@@ -28,8 +28,20 @@
     border-color: #9fc3fa;
 }
 
+.custom-node-device {
+    border-color: #9fc3fa;
+}
+
+.custom-node-sensor {
+    border-color: #9adfdb;
+}
+
 .custom-node-condition {
     border-color: #f0c48d;
+}
+
+.custom-node-logic {
+    border-color: #c4a9f3;
 }
 
 .custom-node-action {
