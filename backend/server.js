@@ -6,6 +6,7 @@ const cors = require("cors");
 
 const connectDB = require("./src/config/db");
 const telemetryRoutes = require("./src/routes/telemetry.routes");
+const ruleRoutes = require("./src/routes/rule.routes");
 
 const app = express();
 
@@ -23,6 +24,9 @@ app.get("/api/health", (req, res) => {
 
 // Telemetry API
 app.use("/api/telemetry", telemetryRoutes);
+
+// Rule API
+app.use("/api/rules", ruleRoutes);
 
 // Start Server
 const PORT = process.env.PORT || 5000;

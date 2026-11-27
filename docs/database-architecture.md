@@ -197,8 +197,10 @@ will be designed separately.
 The frontend palette in `frontend/src/components/workflow/WorkflowSidebar.jsx`
 now uses these node type identifiers and includes initial `data.config`
 defaults. Member 1 will preserve this workflow shape when API persistence is
-implemented. Members 2 and 3 use this contract for the model and persistence
-implementation on their scheduled days.
+implemented. The Rule model and basic create/list persistence endpoints are implemented
+using this contract. The backend validation module validates the name and
+workflow graph before Mongoose writes the document. The frontend custom nodes
+render distinct types and expose their initial configuration.
 
 ## 8. Database Testing
 

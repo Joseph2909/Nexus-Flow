@@ -19,19 +19,27 @@ const initialNodes = [
     {
         id: '1',
         position: { x: 100, y: 100 },
-        data: { label: 'Start Workflow', description: 'Begin workflow' },
+        data: { label: 'Start Workflow', description: 'Begin workflow', config: {} },
         type: 'start',
     },
     {
         id: '2',
         position: { x: 350, y: 100 },
-        data: { label: 'Check Temperature', description: 'Evaluate sensor data' },
+        data: {
+            label: 'Check Temperature',
+            description: 'Evaluate sensor data',
+            config: { operator: '>', value: 80 },
+        },
         type: 'condition',
     },
     {
         id: '3',
         position: { x: 600, y: 100 },
-        data: { label: 'Send Alert', description: 'Notify the team' },
+        data: {
+            label: 'Send Alert',
+            description: 'Notify the team',
+            config: { actionType: 'webhook' },
+        },
         type: 'action',
     },
 ];
